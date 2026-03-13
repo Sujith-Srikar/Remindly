@@ -5,5 +5,6 @@ export const waterRemainder : RemainderConfig = {
     id: WATER_REMAINDER,
     title: "Drink Water",
     defaultInterval: 30,
-    message: "Time to drink water"
+    message: "Time to drink water",
+    retrySchedule: [3, 4, 5]
 }
