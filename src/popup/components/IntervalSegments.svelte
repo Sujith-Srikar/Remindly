@@ -1,7 +1,18 @@
 <script lang="ts">
-  let { interval, onChange } = $props();
+  let {
+    interval,
+    onChange,
+    options = [15, 20, 30, 45, 60],
+  } = $props<{
+    interval: number;
+    onChange: (value: number) => void;
+    options?: number[];
+  }>();
 
-  const options = [15, 20, 30, 45, 60];
+  const handleChange = (event: MouseEvent, option: number) => {
+    event.stopPropagation();
+    onChange(option);
+  };
 </script>
 
 <div
@@ -9,7 +20,9 @@
 >
   {#each options as option}
     <button
-      onclick={() => onChange(option)}
+      type="button"
+      onclick={(event) => handleChange(event, option)}
+      aria-pressed={interval === option}
       class="flex-1 text-sm py-1 rounded-md transition
       {interval === option
         ? 'bg-white dark:bg-neutral-900 shadow'

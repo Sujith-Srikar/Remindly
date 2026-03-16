@@ -5,10 +5,13 @@
 
   const normalizedRadius = radius - stroke * 0.5;
   const circumference = normalizedRadius * 2 * Math.PI;
-  const strokeDashoffset = $derived(circumference - progress * circumference);
+  const clampedProgress = $derived(Math.min(Math.max(progress, 0), 1));
+  const strokeDashoffset = $derived(
+    circumference - clampedProgress * circumference,
+  );
 </script>
 
-<div class="flex flex-col items-center gap-1">
+<div class="relative flex flex-col items-center gap-1">
   <svg height={radius * 2} width={radius * 2} class="-rotate-90">
     <circle
       stroke="#404040"

@@ -1,24 +1,23 @@
 <script lang="ts">
   import "../../styles/global.css";
-  import { onMount } from "svelte";
   import { remainderPlugins } from "../../plugins";
   import { saveSettings, getSettings } from "../../core/storage/storageService";
-  import { WATER_REMAINDER } from "../../utils/constant";
   import ReminderCard from "../components/RemainderCard.svelte";
   import { type RemainderSettings } from "../../core/types";
+  import Header from "../components/layout/Header.svelte";
+  import { fly } from "svelte/transition";
+  import { flip } from "svelte/animate";
 
-  let enabled = $state(false);
-  let interval = $state(30);
   let settings = $state<Record<string, RemainderSettings>>({});
 
   const handleToggleReminder = (id: string) => {
     const current = settings[id];
     const updated = {
       ...current,
-      id: id,
+      enabled: !current.enabled,
     };
     settings[id] = updated;
-    saveSettings(id, updated);
+    void saveSettings(id, updated);
   };
 
   const handleIntervalChange = (id: string, value: number) => {
@@ -28,39 +27,61 @@
       interval: value,
     };
     settings[id] = updated;
-    saveSettings(id, updated);
+    void saveSettings(id, updated);
   };
 
-  onMount(async () => {
-    await Promise.all(
+  const loadSettings = async () => {
+    const entries = await Promise.all(
       remainderPlugins.map(async (plugin) => {
         const res = await getSettings(plugin.id);
-        settings[plugin.id] = {
-          enabled: res.enabled ?? false,
-          interval: res.interval ?? plugin.defaultInterval,
-        };
+        return [
+          plugin.id,
+          {
+            enabled: res.enabled ?? false,
+            interval: res.interval ?? plugin.defaultInterval,
+          },
+        ] as const;
       }),
     );
+
+    settings = Object.fromEntries(entries);
+  };
+
+  $effect(() => {
+    void loadSettings();
   });
 </script>
 
 <main
-  class="w-[320px] h-105 bg-white dark:bg-neutral-900
-  text-neutral-900 dark:text-neutral-100
-  p-4 flex flex-col gap-4 overflow-y-auto"
+  class="
+w-[320px]
+min-h-130
+bg-surface-light
+dark:bg-surface-dark
+flex flex-col
+transition-colors duration-normal
+"
 >
-  {#each remainderPlugins as plugin}
-    {#if settings[plugin.id]}
+  <Header />
+  {#each remainderPlugins.filter((p) => settings[p.id]) as plugin, index (plugin.id)}
+    <div
+      animate:flip={{ duration: 350 }}
+      in:fly={{
+        y: -24,
+        duration: 420,
+        delay: index * 120,
+      }}
+    >
       <ReminderCard
         id={plugin.id}
         title={plugin.title}
-        description={plugin.message}
+        message={plugin.message}
         enabled={settings[plugin.id].enabled}
         interval={settings[plugin.id].interval}
         onToggle={() => handleToggleReminder(plugin.id)}
         onIntervalChange={(value: number) =>
           handleIntervalChange(plugin.id, value)}
       />
-    {/if}
+    </div>
   {/each}
 </main>
