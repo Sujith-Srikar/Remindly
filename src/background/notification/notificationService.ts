@@ -9,7 +9,7 @@ export const notificationService = {
       message: remainderConfig.message,
       type: "basic",
       buttons: [{ title: "YES" }, { title: "You have to!!!" }],
-      iconUrl:  "tank-truck.png",
+      iconUrl:  "water.png",
     }, (notificationId) => {
       if (chrome.runtime.lastError) {
         console.error("Notification Error:", chrome.runtime.lastError);
@@ -24,7 +24,7 @@ export const notificationService = {
       title: "Remainder Disabled",
       message: "Looks like you're busy. I'll stop reminding you 👋",
       type: "basic",
-      iconUrl:  "tank-truck.png",
+      iconUrl:  "water.png",
     }, (notificationId) => {
       if (chrome.runtime.lastError) {
         console.error("GoodBye Notification Error:", chrome.runtime.lastError);
