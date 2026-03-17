@@ -1,47 +1,272 @@
-# Svelte + TS + Vite
+# Remindly
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+A minimalist, modern browser extension to help you stay mindful, hydrated, and centered during deep work or long office hours. Set gentle reminders for basic human needs—like fixing your posture, drinking water, or stretching—without breaking your focus.
 
-## Recommended IDE Setup
+## Overview
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+Remindly lets you set recurring reminders directly from your browser extension popup. Built with a sleek, Apple-like aesthetic using Svelte 5 and Tailwind CSS, it features smooth animations, derived state runes (`$state`, `$derived`), and an intuitive UI to toggle and manage intervals for different activities. The backend relies on Chrome Extension Service Workers, Chrome Storage API, and the Chrome Alarms API to deliver reliable browser notifications.
 
-## Need an official Svelte framework?
+The project was inspired by the simple fact that when we get into "deep work" or long office hours, we often forget the basic things: drinking water, maintaining good posture, and taking a moment to stretch. 
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+---
 
-## Technical considerations
+## The Story of Remindly
 
-**Why use this over SvelteKit?**
+It was 3:00 PM on a Tuesday. Alex, a software engineer, had been staring at the same block of code since 10:00 AM. His spine had slowly morphed into the shape of a cooked shrimp. His coffee mug was a dry wasteland of brown rings, and his eyes felt like they were coated in sandpaper. 
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+Suddenly, a coworker tapped him on the shoulder. "Hey Alex, you okay? You look like a gargoyle defending a cathedral." 
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+Alex blinked, his neck cracking like a glowstick. He realized he hadn't taken a sip of water or moved his legs in five hours. He needed a hero. Not a cape-wearing, flying hero, but a tiny, polite hero that lived in his browser and gently whispered, *"Hey, buddy. Drink some water. And maybe un-shrimp your back."* 
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+Thus, Remindly was born. A tool to save us from ourselves during the treacherous depths of deep work.
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+---
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+## Install (via GitHub Releases)
 
-**Why include `.vscode/extensions.json`?**
+Until Remindly is published to the Chrome Web Store, you can install it manually using the latest release from this repository.
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+### 1. Download the Extension
 
-**Why enable `allowJs` in the TS template?**
+Go to the **Releases** page:
 
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
+👉 https://github.com/Sujith-Srikar/Remindly/releases
 
-**Why is HMR not preserving my local component state?**
+Download the latest release file:
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
 
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
+---
 
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+### 2. Extract the ZIP File
+
+After downloading, extract the ZIP file.
+
+You should see a folder like this: dist/
+
+---
+
+### 3. Load the Extension in Chrome
+
+1. Open Chrome and navigate to: chrome://extensions
+
+2. Enable **Developer Mode** (toggle in the top-right corner)
+
+3. Click **Load unpacked**
+
+4. Select the extracted **dist/** folder
+
+---
+
+### 4. Pin the Extension (Optional)
+
+After loading the extension:
+
+1. Click the **Extensions icon** in the Chrome toolbar
+2. Find **Remindly**
+3. Click the **Pin icon**
+
+Now Remindly will always be visible in your browser toolbar.
+
+---
+
+### Updating the Extension
+
+When a new version is released:
+
+1. Download the latest release ZIP
+2. Extract it
+3. Go to `chrome://extensions`
+4. Click **Reload** on the Remindly extension
+
+
+## Tech Stack
+
+- **Frontend:** Svelte 5 (with Runes), TypeScript, Vite
+- **Styling:** Tailwind CSS
+- **Extension APIs:** Chrome Storage API, Chrome Alarms API, Chrome Notifications API
+- **Icons:** Lucide-Svelte
+- **Build Tooling:** Vite Plugin Svelte, CRXJS Vite Plugin (for extension bundling)
+
+---
+
+## Project Structure
+
+```text
+Remindly/
+├── src/
+│   ├── background/
+│   │   ├── engine/
+│   │   │   └── remainderEngine.ts
+│   │   ├── notification/
+│   │   │   └── notificationService.ts
+│   │   ├── scheduler/
+│   │   │   └── alarmScheduler.ts
+│   │   └── service-worker.ts
+│   ├── core/
+│   │   ├── storage/
+│   │   │   └── storageService.ts
+│   │   └── types.ts
+│   ├── manifest.json
+│   ├── plugins/
+│   │   ├── water/
+│   │   │   └── waterRemainder.ts
+│   │   └── index.ts
+│   ├── popup/
+│   │   ├── components/
+│   │   │   ├── controls/
+│   │   │   │   ├── StepSlider.svelte
+│   │   │   │   └── Toggle.svelte
+│   │   │   ├── feedback/
+│   │   │   │   └── ProcessingRing.svelte
+│   │   │   └── layout/
+│   │   │       ├── Header.svelte
+│   │   │       ├── RemainderCard.svelte
+│   │   │       └── ThemeToggle.svelte
+│   │   ├── pages/
+│   │   │   └── Popup.svelte
+│   │   ├── store/
+│   │   │   ├── remainderStore.ts
+│   │   │   └── uiStore.ts
+│   │   └── popup.ts
+│   ├── styles/
+│   │   └── global.css
+│   └── utils/
+│       ├── constant.ts
+│       └── transition.ts
+├── public/
+├── tailwind.config.ts
+├── vite.config.ts
+└── package.json
 ```
+
+### Key Directories Explained
+
+**`/src/popup`** - The Svelte Frontend
+- Contains the UI components that render when you click the extension icon.
+- Built using modern Svelte 5 features (like `$state`, `$derived`, and `$effect`).
+- Focuses on a buttery-smooth, accessible, and premium user experience.
+
+**`/src/background`** - The Engine
+- Contains `service-worker.ts`, the background script that runs persistently.
+- Listens for changes in Chrome Storage.
+- Schedules Chrome Alarms based on user intervals.
+- Fires native Chrome Notifications when alarms trigger.
+
+**`/src/stores`** - State Management
+- `remainderStore.ts` acts as the bridge between the UI and Chrome Storage. It syncs the Reactivity of the UI with the persistent storage of the extension.
+
+---
+
+## Architecture & Principles
+
+Remindly is built on a few core design and architectural principles:
+
+### 1. Reactive Syncing (The Svelte 5 Way)
+We heavily utilize Svelte 5's Runes (`$state`, `$derived`, `$effect`) to keep the UI in sync. The `remainderStore.ts` creates a reactive state object that automatically saves to `chrome.storage.sync` whenever a value changes. This ensures that the state is never lost when the popup closes.
+
+### 2. Ephemeral UI, Persistent Background
+Chrome extension popups are ephemeral—they die the moment you click away. Therefore, no critical timer logic lives in the UI. 
+- The **UI** just updates `chrome.storage`.
+- The **Service Worker** listens to storage changes and schedules `chrome.alarms`.
+- When an alarm fires, the Service Worker triggers a `chrome.notification`.
+This guarantees that reminders trigger exactly on time, even if the popup is never opened again.
+
+### 3. Accessible & Fluid Components
+Custom components like `StepSlider.svelte` are built from scratch to allow smooth, elastic dragging mechanics while adhering to ARIA standards (e.g., `role="slider"`, `aria-valuenow`).
+
+---
+
+## How to Add New Reminders (For Developers)
+
+Adding a new type of reminder (e.g., "Look away from the screen", "Take a deep breath") is straightforward!
+
+### 1. Define the new ID
+First, ensure your new reminder has a unique string identifier. For example: `"breathe"`.
+
+### 2. Update the Store State Interface
+If you want to track it, add a default state configuration in `src/stores/remainderStore.ts` or wherever you initialize your default storage object. 
+
+*Example:*
+```typescript
+{
+  id: "breathe",
+  title: "Deep Breathing",
+  description: "Take 3 deep breaths.",
+  enabled: false,
+  interval: 30, // minutes
+  icon: "Wind" // Lucide icon name
+}
+```
+
+### 3. Render a new Card in the UI
+In `src/popup/pages/Popup.svelte`, map over your new state or manually add a `<RemainderCard>` component for your new reminder.
+
+```svelte
+<RemainderCard
+  id="breathe"
+  title="Deep Breaths"
+  description="Inhale context, exhale bugs."
+  bind:enabled={storeState.breathe.enabled}
+  bind:interval={storeState.breathe.interval}
+/>
+```
+
+### 4. The Background Script Handles the Rest
+Because of the architecture, **you don't need to change the service worker**. The `service-worker.ts` dynamically listens to any changes in `chrome.storage`. As soon as your UI flips `enabled` to `true` and sets an `interval`, the background script will automatically create an alarm labeled `reminder-breathe` and fire notifications automatically!
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v18+)
+- pnpm (recommended) or npm/yarn
+
+### Local Development
+
+1. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+
+2. Run the dev server (Vite + CRXJS will hot-reload your extension):
+   ```bash
+   pnpm run dev
+   ```
+
+3. **Load the Extension in Chrome:**
+   - Open Chrome and navigate to `chrome://extensions/`.
+   - Enable **Developer mode** (toggle in the top right).
+   - Click **Load unpacked**.
+   - Select the `dist/` folder that was generated by the build step.
+
+### Building for Production
+
+Compile the extension for the Chrome Web Store:
+```bash
+pnpm run build
+```
+The optimized bundle will be neatly packaged in the `dist/` directory, ready to be zipped and uploaded.
+
+---
+
+## Technologies Used
+
+- **Svelte 5** - UI framework (Runes paradigm)
+- **Vite** - Lightning-fast build tool
+- **CRXJS** - Vite plugin making Chrome Extension development feel like modern web dev
+- **Tailwind CSS** - Utility-first styling
+- **Lucide Svelte** - Beautiful SVG icons
+- **TypeScript** - Type safety
+
+---
+
+## Contributing
+
+Feel free to submit issues, fork the repository, and send pull requests. Whether it's adding a new reminder type, tightening the Svelte animations, or improving the background worker reliability, all contributions are welcome!
+
+---
+
+## License
+
+This project is open source and available under the MIT License.
