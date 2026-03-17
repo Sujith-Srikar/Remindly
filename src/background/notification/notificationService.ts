@@ -3,13 +3,19 @@ import type { RemainderConfig } from "../../core/types";
 export const notificationService = {
 
   showRemainderNotification (remainderConfig: RemainderConfig) {
-    console.log(JSON.stringify(remainderConfig))
-    chrome.notifications.create(remainderConfig.id, {
+    const uniqueId = `${remainderConfig.id}-${Date.now()}`;
+    chrome.notifications.create(uniqueId, {
       title: remainderConfig.title,
       message: remainderConfig.message,
       type: "basic",
       buttons: [{ title: "YES" }, { title: "You have to!!!" }],
-      iconUrl:  chrome.runtime.getURL("tank-truck.png"),
+      iconUrl:  "tank-truck.png",
+    }, (notificationId) => {
+      if (chrome.runtime.lastError) {
+        console.error("Notification Error:", chrome.runtime.lastError);
+      } else {
+        console.log("Notification created successfully:", notificationId);
+      }
     });
   },
 
@@ -18,7 +24,11 @@ export const notificationService = {
       title: "Remainder Disabled",
       message: "Looks like you're busy. I'll stop reminding you 👋",
       type: "basic",
-      iconUrl:  chrome.runtime.getURL("tank-truck.png"),
-    })
+      iconUrl:  "tank-truck.png",
+    }, (notificationId) => {
+      if (chrome.runtime.lastError) {
+        console.error("GoodBye Notification Error:", chrome.runtime.lastError);
+      }
+    });
   }
 };

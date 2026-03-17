@@ -7,7 +7,6 @@ export const alarmScheduler = {
   },
 
   async scheduleRetryAlarm (remainderId: string, stage: number, delay: number) {
-    console.log("Schedule Retry:", remainderId, stage, delay)
     await chrome.alarms.create(`${RETRY}:${remainderId}:${stage}` , { delayInMinutes: delay })
   },
 

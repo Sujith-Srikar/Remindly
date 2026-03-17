@@ -2,7 +2,7 @@
   import "../../styles/global.css";
   import { remainderPlugins } from "../../plugins";
   import { saveSettings, getSettings } from "../../core/storage/storageService";
-  import ReminderCard from "../components/RemainderCard.svelte";
+  import ReminderCard from "../components/layout/RemainderCard.svelte";
   import { type RemainderSettings } from "../../core/types";
   import Header from "../components/layout/Header.svelte";
   import { fly } from "svelte/transition";
@@ -59,7 +59,7 @@ min-h-130
 bg-surface-light
 dark:bg-surface-dark
 flex flex-col
-transition-colors duration-normal
+transition-colors duration-500 ease-[cubic-bezier(.22,.61,.36,1)]
 "
 >
   <Header />
@@ -71,6 +71,7 @@ transition-colors duration-normal
         duration: 420,
         delay: index * 120,
       }}
+      class="p-2"
     >
       <ReminderCard
         id={plugin.id}

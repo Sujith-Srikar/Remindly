@@ -1,3 +1,7 @@
+<script lang="ts">
+  import ThemeToggle from "./ThemeToggle.svelte";
+</script>
+
 <header
   class="
 px-4 py-3
@@ -7,5 +11,6 @@ text-neutral-900
 dark:text-white
 "
 >
-  Remindly
+  <span>Remindly</span>
+  <ThemeToggle />
 </header>

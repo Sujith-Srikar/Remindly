@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { activeReminderId, toggleReminderCard } from "../store/uiStore";
-  import Toggle from "./controls/Toggle.svelte";
-  import SegmentControl from "./controls/SegmentControls.svelte";
-  import StepSlider from "./controls/StepSlider.svelte";
-  import ProgressRing from "./feedback/ProcessingRing.svelte";
-  import { scaleFade } from "../../utils/transition";
+  import { activeReminderId, toggleReminderCard } from "../../store/uiStore";
+  import Toggle from "../controls/Toggle.svelte";
+  import StepSlider from "../controls/StepSlider.svelte";
+  import ProgressRing from "../feedback/ProcessingRing.svelte";
 
   let { id, title, message, enabled, interval, onToggle, onIntervalChange } =
     $props<{
@@ -58,8 +56,6 @@
   overflow-hidden
   "
 >
-  <!-- HEADER -->
-
   <div class="flex items-center justify-between gap-4">
     <div class="flex min-w-0 flex-col">
       <span
@@ -86,21 +82,31 @@
     <Toggle checked={enabled} onChange={onToggle} />
   </div>
 
-  {#if expanded}
-    <div
-      id={contentId}
-      class="
-    mt-4
-    flex flex-col
-    gap-4
-    items-center
-    "
-      in:scaleFade={{ duration: 220 }}
-      out:scaleFade={{ duration: 180 }}
-    >
-      <ProgressRing {progress} label={`${interval}m`} />
+  <div
+    class="grid transition-all duration-300 ease-[cubic-bezier(.22,.61,.36,1)]"
+    style="grid-template-rows: {expanded ? '1fr' : '0fr'}; opacity: {expanded ? 1 : 0}; margin-top: {expanded ? '1rem' : '0'};"
+  >
+    <div class="overflow-hidden">
+      <div
+        id={contentId}
+        role="presentation"
+        class="
+          pt-4
+          flex flex-col
+          gap-4
+          items-center
+          transition-transform duration-300 ease-[cubic-bezier(.22,.61,.36,1)]
+        "
+        style="transform: {expanded ? 'scale(1) translateY(0)' : 'scale(0.96) translateY(-8px)'};"
+        onclick={(e) => e.stopPropagation()}
+        onpointerup={(e) => e.stopPropagation()}
+        onpointerdown={(e) => e.stopPropagation()}
+        onkeypress={(e) => e.stopPropagation()}
+      >
+        <ProgressRing {id} {enabled} {interval} {progress} label={`${interval}m`} />
 
-      <StepSlider value={interval} onChange={onIntervalChange}  options={[15,20,30,45,60]} />
+        <StepSlider value={interval} onChange={onIntervalChange}  options={[1, 15,20,30,45,60]} />
+      </div>
     </div>
-  {/if}
+  </div>
 </div>

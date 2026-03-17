@@ -26,7 +26,6 @@ export const remainderEngine = {
     const module = getRemainderById(remainderId);
 
     if (!module) return;
-
     const interval = settings.interval ?? module.defaultInterval;
     await alarmScheduler.scheduleAlarm(remainderId, interval);
   },
@@ -44,7 +43,6 @@ export const remainderEngine = {
     const module = getRemainderById(remainderId);
 
     if (!module) return;
-
     notificationService.showRemainderNotification({
       ...module,
       id: alarm.name,
@@ -52,11 +50,9 @@ export const remainderEngine = {
   },
 
   async handleIgnored(notificationId: string) {
-    console.log("Notification Id:", notificationId);
     const parsed = parseAlarmName(notificationId);
     if (!parsed) return;
     await this.stopRemainder(parsed.remainderId);
-    console.log("Parsed:", JSON.stringify(parsed));
     const module = getRemainderById(parsed.remainderId);
     if (!module) return;
 
