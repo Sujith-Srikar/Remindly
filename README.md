@@ -99,6 +99,7 @@ Remindly/
 │   │   │   └── remainderEngine.ts
 │   │   ├── notification/
 │   │   │   └── notificationService.ts
+│   │   |   └── messages.ts
 │   │   ├── scheduler/
 │   │   │   └── alarmScheduler.ts
 │   │   └── service-worker.ts
@@ -180,38 +181,31 @@ Custom components like `StepSlider.svelte` are built from scratch to allow smoot
 
 Adding a new type of reminder (e.g., "Look away from the screen", "Take a deep breath") is straightforward!
 
-### 1. Define the new ID
-First, ensure your new reminder has a unique string identifier. For example: `"breathe"`.
+### 1. Create a New Plugin Config
 
-### 2. Update the Store State Interface
-If you want to track it, add a default state configuration in `src/stores/remainderStore.ts` or wherever you initialize your default storage object. 
+If you want to track it, create a new config in `src/plugins/[remainder_name]/remainder_name.ts`. 
 
 *Example:*
 ```typescript
-{
-  id: "breathe",
-  title: "Deep Breathing",
-  description: "Take 3 deep breaths.",
-  enabled: false,
-  interval: 30, // minutes
-  icon: "Wind" // Lucide icon name
-}
+export const stretchReminder = {
+  id: "stretch",
+  title: "Stretch",
+  defaultInterval: 45,
+  message: "Your spine filed a complaint.",
+  retrySchedule: [3, 5, 10],
+  iconUrl: "/icons/stretch.png",
+};
 ```
 
-### 3. Render a new Card in the UI
-In `src/popup/pages/Popup.svelte`, map over your new state or manually add a `<RemainderCard>` component for your new reminder.
+### 2. Export it from index.ts
+Export it from:
 
-```svelte
-<RemainderCard
-  id="breathe"
-  title="Deep Breaths"
-  description="Inhale context, exhale bugs."
-  bind:enabled={storeState.breathe.enabled}
-  bind:interval={storeState.breathe.interval}
-/>
+```text
+src/plugins/index.ts
 ```
+That's it
 
-### 4. The Background Script Handles the Rest
+### 3. The Background Script Handles the Rest
 Because of the architecture, **you don't need to change the service worker**. The `service-worker.ts` dynamically listens to any changes in `chrome.storage`. As soon as your UI flips `enabled` to `true` and sets an `interval`, the background script will automatically create an alarm labeled `reminder-breathe` and fire notifications automatically!
 
 ---
