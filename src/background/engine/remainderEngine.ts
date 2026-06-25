@@ -3,6 +3,7 @@ import { notificationService } from "../notification/notificationService";
 import { remainderPlugins, getRemainderById } from "../../plugins";
 import type { RemainderSettings, ParseAlarmName } from "../../core/types";
 import { REMAINDER, RETRY } from "../../utils/constant";
+import { randomRetryMessage } from "../notification/messages";
 
 export const remainderEngine = {
   async init() {
@@ -42,10 +43,17 @@ export const remainderEngine = {
     const remainderId = parsed.remainderId;
     const module = getRemainderById(remainderId);
 
+    let message;
+
+    if(parsed.type === 'retry'){
+      message = randomRetryMessage();
+    }
+
     if (!module) return;
     notificationService.showRemainderNotification({
       ...module,
       id: alarm.name,
+      message: message ?? module.message
     });
   },
 

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount, untrack } from "svelte";
 
   let { id, progress = 0, label = "", interval = 0, enabled = false } = $props<{
     id?: string;
@@ -16,6 +15,18 @@
   let currentLabel = $state("");
   let timerId: ReturnType<typeof setInterval>;
 
+  async function getNextAlarm(id: string) {
+    const alarms = await chrome.alarms.getAll();
+
+    return alarms
+      .filter(
+        (alarm) =>
+          alarm.name === `remainder:${id}` ||
+          alarm.name.startsWith(`retry:${id}:`),
+      )
+      .sort((a, b) => a.scheduledTime - b.scheduledTime)[0];
+  }
+
   async function updateCountdown() {
     if (!id || !enabled) {
       currentProgress = progress;
@@ -24,8 +35,8 @@
     }
 
     try {
-      const alarm = await chrome.alarms.get(`remainder:${id}`);
-      
+      const alarm = await getNextAlarm(id);
+
       if (alarm) {
         const now = Date.now();
         const timeLeftMs = alarm.scheduledTime - now;

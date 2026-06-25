@@ -7,27 +7,27 @@
   import Header from "../components/layout/Header.svelte";
   import { fly } from "svelte/transition";
   import { flip } from "svelte/animate";
+  import { onMount } from "svelte";
 
   let settings = $state<Record<string, RemainderSettings>>({});
 
-  const handleToggleReminder = (id: string) => {
-    const current = settings[id];
+  const updateRemainder = (id: string, patch: Partial<RemainderSettings>) => {
     const updated = {
-      ...current,
-      enabled: !current.enabled,
-    };
+      ...settings[id],
+      ...patch
+    }
+
     settings[id] = updated;
     void saveSettings(id, updated);
+  }
+
+  const handleToggleReminder = (id: string) => {
+    const current = settings[id];
+    updateRemainder(id, {enabled: !settings[id].enabled});
   };
 
   const handleIntervalChange = (id: string, value: number) => {
-    const current = settings[id];
-    const updated = {
-      ...current,
-      interval: value,
-    };
-    settings[id] = updated;
-    void saveSettings(id, updated);
+    updateRemainder(id, {interval: value});
   };
 
   const loadSettings = async () => {
@@ -47,9 +47,9 @@
     settings = Object.fromEntries(entries);
   };
 
-  $effect(() => {
-    void loadSettings();
-  });
+  onMount(() => {
+  void loadSettings();
+});
 </script>
 
 <main

@@ -11,6 +11,11 @@ export interface RemainderConfig {
     defaultInterval: number;
     message: string;
     retrySchedule: number[];
+    iconUrl?: string;
+    buttonLabels?: {
+        accept: string;
+        dismiss: string;
+    }
 }
 
 type RemainderType = typeof REMAINDER | typeof RETRY

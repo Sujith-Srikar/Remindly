@@ -1,33 +1,44 @@
 import type { RemainderConfig } from "../../core/types";
+import { randomGoodByeMessage } from "./messages";
+
+const DEFAULT_ICON = "default.png";
 
 export const notificationService = {
 
-  showRemainderNotification (remainderConfig: RemainderConfig) {
-    const uniqueId = `${remainderConfig.id}-${Date.now()}`;
+  showRemainderNotification(remainderConfig: RemainderConfig) {
+    const uniqueId = `${remainderConfig.id}`;
     chrome.notifications.create(uniqueId, {
       title: remainderConfig.title,
       message: remainderConfig.message,
       type: "basic",
-      buttons: [{ title: "YES" }, { title: "You have to!!!" }],
-      iconUrl:  "water.png",
+      buttons: [{
+        title: remainderConfig.buttonLabels?.accept ?? "On it"
+      }, {
+        title: remainderConfig.buttonLabels?.dismiss ?? "Maybe later"
+      }],
+      iconUrl: chrome.runtime.getURL(remainderConfig.iconUrl ?? DEFAULT_ICON),
     }, (notificationId) => {
       if (chrome.runtime.lastError) {
-        console.error("Notification Error:", chrome.runtime.lastError);
+        console.error(`Notification Error for id-${notificationId}:`, chrome.runtime.lastError);
       } else {
         console.log("Notification created successfully:", notificationId);
       }
     });
   },
 
-  showGoodByeNotification (remainderConfig: RemainderConfig) {
+  showGoodByeNotification(remainderConfig: RemainderConfig) {
+    const message = randomGoodByeMessage();
     chrome.notifications.create(remainderConfig.id, {
       title: "Remainder Disabled",
-      message: "Looks like you're busy. I'll stop reminding you 👋",
+      message,
       type: "basic",
-      iconUrl:  "water.png",
+      iconUrl: chrome.runtime.getURL(remainderConfig.iconUrl ?? DEFAULT_ICON),
     }, (notificationId) => {
       if (chrome.runtime.lastError) {
-        console.error("GoodBye Notification Error:", chrome.runtime.lastError);
+        console.error(`GoodBye Notification Error for id-${notificationId}:`, chrome.runtime.lastError);
+      }
+      else {
+        console.log("Notification created successfully:", notificationId);
       }
     });
   }
