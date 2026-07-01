@@ -1,7 +1,7 @@
 import type { RemainderConfig } from "../../core/types";
 import { randomGoodByeMessage } from "./messages";
 
-const DEFAULT_ICON = "default.png";
+const DEFAULT_ICON = "icons/default.png";
 
 export const notificationService = {
 
@@ -19,7 +19,7 @@ export const notificationService = {
       iconUrl: chrome.runtime.getURL(remainderConfig.iconUrl ?? DEFAULT_ICON),
     }, (notificationId) => {
       if (chrome.runtime.lastError) {
-        console.error(`Notification Error for id-${notificationId}:`, chrome.runtime.lastError);
+        console.error(`Notification Error for id-${notificationId}:`, JSON.stringify(chrome.runtime.lastError));
       } else {
         console.log("Notification created successfully:", notificationId);
       }
@@ -35,7 +35,7 @@ export const notificationService = {
       iconUrl: chrome.runtime.getURL(remainderConfig.iconUrl ?? DEFAULT_ICON),
     }, (notificationId) => {
       if (chrome.runtime.lastError) {
-        console.error(`GoodBye Notification Error for id-${notificationId}:`, chrome.runtime.lastError);
+        console.error(`GoodBye Notification Error for id-${notificationId}:`, JSON.stringify(chrome.runtime.lastError));
       }
       else {
         console.log("Notification created successfully:", notificationId);

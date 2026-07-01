@@ -7,7 +7,7 @@ export const waterRemainder : RemainderConfig = {
     defaultInterval: 30,
     message: "POV: your water bottle has trust issues",
     retrySchedule: [3, 4, 5],
-    iconUrl: "water.png",
+    iconUrl: "icons/water.png",
     buttonLabels: {
         accept: "Fine, I'll do it",
         dismiss: "You can't make me!"
