@@ -45,5 +45,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          body_path: .github/release.md
           files: Remindly-${{ github.ref_name }}.zip
           generate_release_notes: false

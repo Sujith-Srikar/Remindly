@@ -1,2 +1,14 @@
+#!/usr/bin/env sh
+
+while read local_ref local_sha remote_ref remote_sha
+do
+  case "$local_ref:$remote_ref" in
+    refs/tags/*:*|*:refs/tags/*)
+      echo "Tag operation detected, skipping pre-push checks."
+      exit 0
+      ;;
+  esac
+done
+
 pnpm check
 pnpm build
