@@ -6,17 +6,17 @@ A minimalist, modern browser extension to help you stay mindful, hydrated, and c
 
 Remindly lets you set recurring reminders directly from your browser extension popup. Built with a sleek, Apple-like aesthetic using Svelte 5 and Tailwind CSS, it features smooth animations, derived state runes (`$state`, `$derived`), and an intuitive UI to toggle and manage intervals for different activities. The backend relies on Chrome Extension Service Workers, Chrome Storage API, and the Chrome Alarms API to deliver reliable browser notifications.
 
-The project was inspired by the simple fact that when we get into "deep work" or long office hours, we often forget the basic things: drinking water, maintaining good posture, and taking a moment to stretch. 
+The project was inspired by the simple fact that when we get into "deep work" or long office hours, we often forget the basic things: drinking water, maintaining good posture, and taking a moment to stretch.
 
 ---
 
 ## The Story of Remindly
 
-It was 3:00 PM on a Tuesday. Alex, a software engineer, had been staring at the same block of code since 10:00 AM. His spine had slowly morphed into the shape of a cooked shrimp. His coffee mug was a dry wasteland of brown rings, and his eyes felt like they were coated in sandpaper. 
+It was 3:00 PM on a Tuesday. Alex, a software engineer, had been staring at the same block of code since 10:00 AM. His spine had slowly morphed into the shape of a cooked shrimp. His coffee mug was a dry wasteland of brown rings, and his eyes felt like they were coated in sandpaper.
 
-Suddenly, a coworker tapped him on the shoulder. "Hey Alex, you okay? You look like a gargoyle defending a cathedral." 
+Suddenly, a coworker tapped him on the shoulder. "Hey Alex, you okay? You look like a gargoyle defending a cathedral."
 
-Alex blinked, his neck cracking like a glowstick. He realized he hadn't taken a sip of water or moved his legs in five hours. He needed a hero. Not a cape-wearing, flying hero, but a tiny, polite hero that lived in his browser and gently whispered, *"Hey, buddy. Drink some water. And maybe un-shrimp your back."* 
+Alex blinked, his neck cracking like a glowstick. He realized he hadn't taken a sip of water or moved his legs in five hours. He needed a hero. Not a cape-wearing, flying hero, but a tiny, polite hero that lived in his browser and gently whispered, _"Hey, buddy. Drink some water. And maybe un-shrimp your back."_
 
 Thus, Remindly was born. A tool to save us from ourselves during the treacherous depths of deep work.
 
@@ -32,17 +32,23 @@ Go to the **Releases** page:
 
 👉 https://github.com/Sujith-Srikar/Remindly/releases
 
-Download the latest release file: Remindly-${{github.ref_name}}.zip
-
+Download the latest release archive: `Remindly-vX.Y.Z.zip`
 
 ---
 
 ### 2. Extract the ZIP File
 
-After downloading, extract the ZIP file.
+Extract the downloaded ZIP file.
 
-You should see a folder like this: dist/
+You should see files such as:
 
+```text
+manifest.json
+assets/
+icons/
+...
+```
+Inside the `Remindly-vX.Y.Z.zip` FOLDER
 ---
 
 ### 3. Load the Extension in Chrome
@@ -53,7 +59,7 @@ You should see a folder like this: dist/
 
 3. Click **Load unpacked**
 
-4. Select the extracted **dist/** folder
+4. Select the **extracted folder** (the folder containing `manifest.json`)
 
 ---
 
@@ -67,6 +73,8 @@ After loading the extension:
 
 Now Remindly will always be visible in your browser toolbar.
 
+That's it! 🎉
+
 ---
 
 ### Updating the Extension
@@ -77,7 +85,6 @@ When a new version is released:
 2. Extract it
 3. Go to `chrome://extensions`
 4. Click **Reload** on the Remindly extension
-
 
 ## Tech Stack
 
@@ -143,17 +150,20 @@ Remindly/
 ### Key Directories Explained
 
 **`/src/popup`** - The Svelte Frontend
+
 - Contains the UI components that render when you click the extension icon.
 - Built using modern Svelte 5 features (like `$state`, `$derived`, and `$effect`).
 - Focuses on a buttery-smooth, accessible, and premium user experience.
 
 **`/src/background`** - The Engine
+
 - Contains `service-worker.ts`, the background script that runs persistently.
 - Listens for changes in Chrome Storage.
 - Schedules Chrome Alarms based on user intervals.
 - Fires native Chrome Notifications when alarms trigger.
 
 **`/src/stores`** - State Management
+
 - `remainderStore.ts` acts as the bridge between the UI and Chrome Storage. It syncs the Reactivity of the UI with the persistent storage of the extension.
 
 ---
@@ -163,16 +173,20 @@ Remindly/
 Remindly is built on a few core design and architectural principles:
 
 ### 1. Reactive Syncing (The Svelte 5 Way)
+
 We heavily utilize Svelte 5's Runes (`$state`, `$derived`, `$effect`) to keep the UI in sync. The `remainderStore.ts` creates a reactive state object that automatically saves to `chrome.storage.sync` whenever a value changes. This ensures that the state is never lost when the popup closes.
 
 ### 2. Ephemeral UI, Persistent Background
-Chrome extension popups are ephemeral—they die the moment you click away. Therefore, no critical timer logic lives in the UI. 
+
+Chrome extension popups are ephemeral—they die the moment you click away. Therefore, no critical timer logic lives in the UI.
+
 - The **UI** just updates `chrome.storage`.
 - The **Service Worker** listens to storage changes and schedules `chrome.alarms`.
 - When an alarm fires, the Service Worker triggers a `chrome.notification`.
-This guarantees that reminders trigger exactly on time, even if the popup is never opened again.
+  This guarantees that reminders trigger exactly on time, even if the popup is never opened again.
 
 ### 3. Accessible & Fluid Components
+
 Custom components like `StepSlider.svelte` are built from scratch to allow smooth, elastic dragging mechanics while adhering to ARIA standards (e.g., `role="slider"`, `aria-valuenow`).
 
 ---
@@ -183,29 +197,33 @@ Adding a new type of reminder (e.g., "Look away from the screen", "Take a deep b
 
 ### 1. Create a New Plugin Config
 
-If you want to track it, create a new config in `src/plugins/[remainder_name]/remainder_name.ts`. 
+If you want to track it, create a new config in `src/plugins/[remainder_name]/remainder_name.ts`.
 
-*Example:*
+_Example:_
+
 ```typescript
 export const stretchReminder = {
-  id: "stretch",
-  title: "Stretch",
-  defaultInterval: 45,
-  message: "Your spine filed a complaint.",
-  retrySchedule: [3, 5, 10],
-  iconUrl: "/icons/stretch.png",
+	id: 'stretch',
+	title: 'Stretch',
+	defaultInterval: 45,
+	message: 'Your spine filed a complaint.',
+	retrySchedule: [3, 5, 10],
+	iconUrl: '/icons/stretch.png'
 };
 ```
 
 ### 2. Export it from index.ts
+
 Export it from:
 
 ```text
 src/plugins/index.ts
 ```
+
 That's it
 
 ### 3. The Background Script Handles the Rest
+
 Because of the architecture, **you don't need to change the service worker**. The `service-worker.ts` dynamically listens to any changes in `chrome.storage`. As soon as your UI flips `enabled` to `true` and sets an `interval`, the background script will automatically create an alarm labeled `reminder-breathe` and fire notifications automatically!
 
 ---
@@ -213,17 +231,20 @@ Because of the architecture, **you don't need to change the service worker**. Th
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v18+)
 - pnpm (recommended) or npm/yarn
 
 ### Local Development
 
 1. Install dependencies:
+
    ```bash
    pnpm install
    ```
 
 2. Run the dev server (Vite + CRXJS will hot-reload your extension):
+
    ```bash
    pnpm run dev
    ```
@@ -237,9 +258,11 @@ Because of the architecture, **you don't need to change the service worker**. Th
 ### Building for Production
 
 Compile the extension for the Chrome Web Store:
+
 ```bash
 pnpm run build
 ```
+
 The optimized bundle will be neatly packaged in the `dist/` directory, ready to be zipped and uploaded.
 
 ---
