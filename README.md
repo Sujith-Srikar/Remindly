@@ -32,7 +32,7 @@ Go to the **Releases** page:
 
 👉 https://github.com/Sujith-Srikar/Remindly/releases
 
-Download the latest release file:
+Download the latest release file: Remindly-${{github.ref_name}}.zip
 
 
 ---

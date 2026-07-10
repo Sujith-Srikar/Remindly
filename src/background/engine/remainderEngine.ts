@@ -10,6 +10,8 @@ export const remainderEngine = {
     const storage = await chrome.storage.local.get(null);
 
     for (const module of remainderPlugins) {
+      await this.stopRemainder(module.id);
+      
       const settings = storage[module.id] as RemainderSettings | undefined;
 
       if (!settings) continue;
