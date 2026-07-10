@@ -111,7 +111,7 @@
 				<div
 					class={[
 						'flex items-end flex-nowrap',
-						!dragging && 'transition-transform duration-400ms ease-[cubic-bezier(0.16,1,0.3,1)]'
+						!dragging && 'transition-transform duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]'
 					]}
 					style={`transform: translateX(calc(${offset}px - 5px));`}
 				>

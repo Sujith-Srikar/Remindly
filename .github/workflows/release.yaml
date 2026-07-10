@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Respository
+      - name: Checkout Repository
         uses: actions/checkout@v6
 
       - name: Setup pnpm
@@ -42,9 +42,16 @@ jobs:
           cd dist
           zip -r ../Remindly-${{ github.ref_name }}.zip .
 
+      - name: Read release title
+        id: release_title
+        run: |
+          TITLE=$(head -n 1 .github/release.md | sed 's/^# //')
+          echo "title=$TITLE" >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          name: ${{ steps.release_title.outputs.title }}
           body_path: .github/release.md
           files: Remindly-${{ github.ref_name }}.zip
           generate_release_notes: false

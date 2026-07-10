@@ -86,7 +86,7 @@
 	const offset = $derived(circumference - clampedProgress * circumference);
 </script>
 
-<div class="relative flex items-center justify-center w-72px h-72px">
+<div class="relative flex items-center justify-center w-[72px] h-[72px]">
 	<svg width="72" height="72" class="absolute -rotate-90 pointer-events-none">
 		{#each Array.from({ length: 12 }, (_, i) => i) as i (i)}
 			<line
@@ -116,14 +116,14 @@
 			r={radius}
 			stroke-width="3.5"
 			stroke-linecap="round"
-			class="stroke-accent fill-none transition-all duration-600ms ease-[cubic-bezier(0.16,1,0.3,1)]"
+			class="stroke-accent fill-none transition-all duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
 			stroke-dasharray={circumference}
 			stroke-dashoffset={offset}
 			style="filter: drop-shadow(0 0 4px rgba(249,115,22,0.3));"
 		/>
 
 		<g
-			class="transition-transform duration-600ms ease-[cubic-bezier(0.16,1,0.3,1)]"
+			class="transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
 			style={`transform: rotate(${currentProgress * 360}deg); transform-origin: 36px 36px;`}
 		>
 			<circle
