@@ -48,6 +48,7 @@ assets/
 icons/
 ...
 ```
+
 Inside the `Remindly-vX.Y.Z.zip` FOLDER
 ---
 
