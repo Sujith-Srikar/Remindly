@@ -1,33 +1,29 @@
 {
-  "manifest_version": 3,
-  "name": "Reminder",
-  "version": "1.0",
-  "description": "Helps you to set reminders and get notified at the right time.",
+	"manifest_version": 3,
+	"name": "Reminder",
+	"version": "1.0",
+	"description": "Helps you to set reminders and get notified at the right time.",
 
-  "permissions": [
-    "storage",
-    "notifications",
-    "alarms"
-  ],
+	"permissions": ["storage", "notifications", "alarms"],
 
-  "background": {
-    "service_worker": "src/background/service-worker.ts",
-    "type": "module"
-  },
+	"background": {
+		"service_worker": "src/background/service-worker.ts",
+		"type": "module"
+	},
 
-  "icons": {
-    "16": "logo-16.png",
-    "32": "logo-32.png",
-    "48": "logo-48.png",
-    "128": "logo-128.png"
-  },
+	"icons": {
+		"16": "logo-16.png",
+		"32": "logo-32.png",
+		"48": "logo-48.png",
+		"128": "logo-128.png"
+	},
 
-  "action": {
-    "default_popup": "index.html",
-    "default_icon": {
-      "16": "logo-16.png",
-      "32": "logo-32.png",
-      "48": "logo-48.png"
-    }
-  }
+	"action": {
+		"default_popup": "index.html",
+		"default_icon": {
+			"16": "logo-16.png",
+			"32": "logo-32.png",
+			"48": "logo-48.png"
+		}
+	}
 }

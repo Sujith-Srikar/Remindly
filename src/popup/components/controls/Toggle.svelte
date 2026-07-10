@@ -1,22 +1,22 @@
 <script lang="ts">
-  let { checked, onChange } = $props<{
-    checked: boolean;
-    onChange: () => void;
-  }>();
+	let { checked, onChange } = $props<{
+		checked: boolean;
+		onChange: () => void;
+	}>();
 
-  const toggle = (e: MouseEvent) => {
-    e.stopPropagation();
-    onChange();
-  };
+	const toggle = (e: MouseEvent) => {
+		e.stopPropagation();
+		onChange();
+	};
 </script>
 
 <button
-  type="button"
-  onclick={toggle}
-  role="switch"
-  aria-checked={checked}
-  aria-label={checked ? "Disable reminder" : "Enable reminder"}
-  class="
+	type="button"
+	onclick={toggle}
+	role="switch"
+	aria-checked={checked}
+	aria-label={checked ? 'Disable reminder' : 'Enable reminder'}
+	class="
 relative
 w-10
 h-6
@@ -25,11 +25,11 @@ transition-colors
 duration-normal
 ease-apple
 "
-  class:bg-accent={checked}
-  class:bg-neutral-300={!checked}
+	class:bg-accent={checked}
+	class:bg-neutral-300={!checked}
 >
-  <div
-    class="
+	<div
+		class="
 absolute
 top-0.5
 left-0.5
@@ -42,6 +42,6 @@ transition-transform
 duration-normal
 ease-apple
 "
-    style:transform={checked ? "translateX(16px)" : "translateX(0)"}
-  ></div>
+		style:transform={checked ? 'translateX(16px)' : 'translateX(0)'}
+	></div>
 </button>

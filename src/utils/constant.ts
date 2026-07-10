@@ -1,5 +1,5 @@
-const WATER_REMAINDER = "water-remainder";
+const WATER_REMAINDER = 'water-remainder';
 const REMAINDER = 'remainder';
-const RETRY = 'retry'
+const RETRY = 'retry';
 
-export {WATER_REMAINDER, REMAINDER, RETRY}
+export { WATER_REMAINDER, REMAINDER, RETRY };

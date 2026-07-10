@@ -1,27 +1,27 @@
-import { REMAINDER, RETRY } from "../utils/constant";
+import { REMAINDER, RETRY } from '../utils/constant';
 
 export interface RemainderSettings {
-    enabled: boolean;
-    interval: number;
+	enabled: boolean;
+	interval: number;
 }
 
 export interface RemainderConfig {
-    id: string;
-    title: string;
-    defaultInterval: number;
-    message: string;
-    retrySchedule: number[];
-    iconUrl?: string;
-    buttonLabels?: {
-        accept: string;
-        dismiss: string;
-    }
+	id: string;
+	title: string;
+	defaultInterval: number;
+	message: string;
+	retrySchedule: number[];
+	iconUrl?: string;
+	buttonLabels?: {
+		accept: string;
+		dismiss: string;
+	};
 }
 
-type RemainderType = typeof REMAINDER | typeof RETRY
+type RemainderType = typeof REMAINDER | typeof RETRY;
 
 export interface ParseAlarmName {
-    type: RemainderType;
-    remainderId: string;
-    stage?: number
+	type: RemainderType;
+	remainderId: string;
+	stage?: number;
 }
