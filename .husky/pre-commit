@@ -7,3 +7,5 @@ pnpm exec prettier --write --ignore-unknown $FILES
 pnpm exec eslint --fix $FILES
 
 git update-index --again
+
+pnpm format:check
