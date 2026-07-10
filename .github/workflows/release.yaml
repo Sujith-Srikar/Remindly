@@ -35,6 +35,7 @@ jobs:
 
       - name: Zip build output
         run: |
+              cd dist
               zip -r ../Remindly-${{ github.ref_name }}.zip .
 
       - name: Create GitHub Release
